@@ -42,12 +42,17 @@ for(i in 1:ContCiudades){
     t <- proc.time()
     CiudadDestino=Ciudades[j,1]
     Recorridos[numFilas][1]=Ciudadesorigen
-    Recorridos[numFilas][2]=CiudadDestino
+    Recorridos[j*52:52][2]=CiudadDestino
     a=proc.time()-t[1]
     numFilas=numFilas+1
   }
   numFilas=numFilas+1
 }
+
+
+Recorridos[1:52][2] = Ciudades[, 1]
+
+length(Recorridos[(1:52)][1])  
 numFilas=0
 Recorridos[numFilas][1]=Ciudadesorigen
 
@@ -59,7 +64,7 @@ Ciudades$lon = cordenadas$lon
 
 geocodeQueryCheck(userType = "free")
   cordenadas
-cordenadas<-  geocode("lleida")
+cordenadas<-  geocode("madrid")
   
   
 Ciudades$cordenadas.lat
@@ -69,19 +74,37 @@ coord$lon
   
   
 geocodeQueryCheck(userType = "free")
-coord = geocode(Ciudades$Ciudades)
 
 #Antiguo
 puntos = data.frame(localizacion = c("Vitoria",
                                      "Albacete",
                                      "Roma"), stringsAsFactors = F)
-geocodeQueryCheck(userType = "free")
-coord = geocode(puntos$localizacion)
-puntos$lat = coord$lat
-puntos$lon = coord$lon
 
-leaflet(puntos) %>% addTiles() %>%
-  addMarkers(puntos$lon, puntos$lat, popup = puntos$localizacion)
+
+leaflet(Ciudades) %>% addTiles() %>%
+  addMarkers(Ciudades$lon, Ciudades$lat, popup = Ciudades$Ciudades)
+
+distancias = mapdist(Ciudades$Ciudades[2], Ciudades$Ciudades[3], mode="driving")
+
+distancias=matrix(0,ContCiudades,ContCiudades)
+tiempo=matrix(0,ContCiudades,ContCiudades)
+
+
+for(i in 1:ContCiudades){
+  for(j in 1:ContCiudades){
+    datos = mapdist(Ciudades$Ciudades[i], Ciudades$Ciudades[j], mode="driving")
+    distancias[i,j]= datos[,4]
+    tiempo[i,j]= datos[,7]
+  }
+}
+
+
+#(userType = "free")
+#coord = geocode(puntos$localizacion)
+#puntos$lat = coord$lat
+#puntos$lon = coord$lon
+
+
 
 distancias = mapdist(puntos$localizacion[2], puntos$localizacion[3], mode="driving")
 
