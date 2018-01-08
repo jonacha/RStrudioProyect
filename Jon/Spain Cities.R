@@ -5,9 +5,6 @@
 rm(list = ls());cat("\014")
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 getwd()
-library(GGally)
-library(ggplot2)
-library(gridExtra)
 
 #Librerias
 #install.packages("ggmap", dep = T)
@@ -16,7 +13,9 @@ library(ggmap)
 library(leaflet)
 #install.packages("GGally", dep = T)
 library(GGally)
+#install.packages("ggplot2", dep = T)
 library(ggplot2)
+#install.packages("gridExtra", dep = T)
 library(gridExtra)
 #install.packages("xlsx", dep = T)
 library(xlsx)
@@ -40,6 +39,7 @@ colnames(fallos) <- cnames
 
 
 nfallos=1;
+
 for(i in 1:ContCiudades){
   for(j in i:ContCiudades){
     if(j==1){
@@ -57,42 +57,30 @@ for(i in 1:ContCiudades){
     nfallos=nfallos+1;
     }else{
       distancias[i,j]= datos[,4]
+      distancias[j,i]= datos[,4]
       tiempo[i,j]= datos[,7]
+      tiempo[j,i]= datos[,7]
     }
     }
     }
     
   }
 }
-write.xlsx(distancias, "C:/Proyecto/RStrudioProyect/Jon/DistanciasCuidades.xlsx") 
-write.xlsx(tiempo, "C:/Proyecto/RStrudioProyect/Jon/TiemposCiudades.xlsx") 
+write.xlsx(distancias, "DistanciasCuidades.xlsx") 
+write.xlsx(tiempo, "TiemposCiudades.xlsx") 
+write.xlsx(fallos, "ciudadesQueFallan.xlsx") 
 
-a=distancias
-b=tiempo;
-class(a)
+class(tiempo[i,51])
 for(i in 1:ContCiudades){
-  a[1:(52-i),i]=distancias[i,1:(52-i)]
-  b[1:(52-i),i]=tiempo[i,1:(52-i)]
+  for(i in 1:ContCiudades){
+  if(a[i,j]>0){
+  }else{
+    d=distancias[i,j]
+  }
+  }
   
 }
 
-for(i in 1:ContCiudades){
-  a[i,1:i]=distancias[1:i,i]
-  b[i,1:i]=tiempo[1:i,i]
-  
-}
-
-
-a[1:52,1]
-a[1:52,1]=distancias[1,1:52]
-distancias[1,1:52]
-#Santa+Cruz+de+Tenerife&mode=driving&sensor=false
-#matching was not perfect, returning what was found.
-#Error in `*tmp*`[[c(1, 1)]] : no such index at level 1
-#(userType = "free")
-#coord = geocode(puntos$localizacion)
-#puntos$lat = coord$lat
-#puntos$lon = coord$lon
 
 
 #Zona de pruevas----------------------------------------------------------------------------------
@@ -131,6 +119,26 @@ leaflet(Ciudades) %>% addTiles() %>%
   addMarkers(Ciudades$lon, Ciudades$lat, popup = Ciudades$Ciudades)
 
 
+a=distancias
+b=tiempo;
+class(a)
+for(i in 1:ContCiudades){
+  a[1:(52-i),i]=distancias[i,1:(52-i)]
+  b[1:(52-i),i]=tiempo[i,1:(52-i)]
+  
+  
+}
+
+for(i in 1:ContCiudades){
+  a[i,1:i]=distancias[1:i,i]
+  b[i,1:i]=tiempo[1:i,i]
+  
+}
+
+
+a[1:52,1]
+a[1:52,1]=distancias[1,1:52]
+distancias[1,1:52]
 
 Recorridos[1:52][2] = Ciudades[, 1]
 numFilas=0
