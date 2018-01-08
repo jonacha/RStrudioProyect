@@ -40,7 +40,7 @@ colnames(fallos) <- cnames
 
 nfallos=1;
 
-for(i in 1:ContCiudades){
+for(i in 37:ContCiudades){
   for(j in i:ContCiudades){
     if(j==1){
       j=i;
@@ -91,12 +91,12 @@ if(is.data.frame(datos) && nrow(datos)==0){
   datos[,7]=0;
 }
 
-puntos = data.frame(localizacion = c("Barcelona",
-                                     "bilbao",
+puntos = data.frame(localizacion = c("Melilla",
+                                     "Tenerife",
                                      "Albacete","Centro Comercial Ferial Plaza, Guadalajara","Catedral de Leon","Tenerife","Parque De Santa Ana, Cuenca","Museo Maritimo del Cantabrico,Santander"), stringsAsFactors = F)
 
 ad = mapdist("Barcelona", "bilbao", mode="driving", output = c( "all"), messaging = FALSE, sensor = FALSE, language = "en-EN", override_limit = FALSE)
-a = mapdist(puntos$localizacion[3], puntos$localizacion[2], mode="driving")
+a = mapdist(puntos$localizacion[1], puntos$localizacion[2], mode="driving")
 #a = mapdist(puntos$localizacion[4],puntos$localizacion[2],mode="driving")
 #a = mapdist(puntos$localizacion[5],puntos$localizacion[2],mode="driving")
 a = mapdist(puntos$localizacion[6], puntos$localizacion[2], mode="driving")
@@ -168,7 +168,7 @@ class(Recorridos)
 cnames <-c("Ciudad Origen", "Ciudad Destino", "Tiempo", "Gasolina", "Precio")
 colnames(Recorridos) <- cnames
 #Antiguo -------------------------------------------------------------------------------------
-rute = route(puntos$localizacion[2], puntos$localizacion[3], structure="route")
+rute = route(puntos$localizacion[1], puntos$localizacion[2], structure="route")
 
 leaflet(puntos) %>% addTiles() %>%
   addAwesomeMarkers(rute$lon, rute$lat) %>%
