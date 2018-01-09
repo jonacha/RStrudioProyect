@@ -21,14 +21,13 @@ library(gridExtra)
 library(xlsx)
 #----------------------------------------------------------------------------------------
 
-Ciudades <- read.xlsx("CiudadesEspaña.xlsx", sheetIndex = 1,stringsAsFactors = F)[,-1]
+Ciudades <- read.xlsx("CiudadesEspa?a.xlsx", sheetIndex = 1,stringsAsFactors = F)[,-1]
 Ciudades
 #class(Ciudades)
 ContCiudades=  nrow(Ciudades)
-# jololo <- geocode("valencia, spain")
-# jololo
+
 # cordenadas[,] <- jololo
-# cordenadas <- geocode(Ciudades$Ciudades) 
+cordenadas <- geocode(Ciudades$Ciudades) 
 # geocodeQueryCheck(userType = "free")
 for (ciudad in 1:ContCiudades) {
   while(is.na(cordenadas[ciudad,1])){
@@ -300,25 +299,52 @@ plot1 = ggplot(progreso)+
 grid.arrange(plot1,ncol=1)
 
 leaflet(Ciudades) %>% addTiles() %>%
-  addAwesomeMarkers(Ciudades$lon, Ciudades$lat)
-  
+  addAwesomeMarkers(Ciudades$lon, Ciudades$lat,label  =Ciudades$Ciudades)
+result=(stringsAsFactors = F)  
 result = Ciudades
 result$dist=0
+best
 for(i in 1:ContCiudades){
   result[i,] = Ciudades[best[i],]
+}
+for(i in 1:ContCiudades){
   if((i)<ContCiudades){
  # recorrido[i,2]=distancias[best[i],best[i+1]]
   #recorrido[i,3]=tiempo[best[i],best[i+1]]
   result[i,4]=paste("Distancia: ",toString(distancias[best[i],best[i+1]])," Tiempo:",toString(tiempo[best[i],best[i+1]]) )
+  result[i,1]= paste(toString (i),"? ", result[i,1])
   #recorrido[i,1]="Distancia: "+toString(recorrido[i,2])+" Tiempo: "+ toString(recorrido[i,3])
   }
 }
+
+#mapa sin rutas
 result[ContCiudades+1,] = Ciudades[best[1],]
+result[ContCiudades,1]= paste(toString (52),"? ", result[52,1])
 result[ContCiudades+1,4]=paste("Distancia: ",toString(distancias[best[ContCiudades],best[1]])," Tiempo:",toString(tiempo[best[ContCiudades],best[1]]) )
 #result[53,1]=paste("Distancia: ",toString(distancias[best[ContCiudades],best[1]])," Km Tiempo:",toString(tiempo[best[ContCiudades],best[1]])," Min" )
 leaflet(Ciudades) %>% addTiles() %>%
-  addAwesomeMarkers(Ciudades$lon, Ciudades$lat,label  =Ciudades$Ciudades) %>%
+  addAwesomeMarkers(result$lon, result$lat,label  =result$Ciudades) %>%
   addPolylines(result$lon, result$lat, popup = result$dist)
+
+# Generar todas las rutas
+
+for(i in 1:ContCiudades){
+  result[i,] = Ciudades[best[i],]
+} 
+
+rutas= route(result[1,1] ,result[2,1]  , structure="route");
+for(i in 2:(ContCiudades-1)){
+  rutas=rbind(rutas,route(result[i,1] ,result[i+1,1]  , structure="route"))
+
+  }
+rutas=rbind(rutas,route(result[ContCiudades,1] ,result[ContCiudades+1,1], structure="route"))
+
+
+leaflet(Ciudades) %>% addTiles() %>%
+  addAwesomeMarkers(Ciudades$lon, Ciudades$lat,label  =Ciudades$Ciudades) %>%
+  addCircles(rutas$lon, rutas$lat, weight = 5, radius=100, 
+             color="#ffa500", stroke = TRUE, fillOpacity = 0.8) %>%
+  addPolylines(rutas$lon, rutas$lat,label=rutas$km)
 
 #Fin Zona Curro-----------------------------------------------------------------------------------
 
