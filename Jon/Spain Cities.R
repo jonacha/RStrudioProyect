@@ -8,7 +8,7 @@
   getwd()
 #Fin de Paso 0
 
-# Inicio Paso 1 - Librerias
+#♠ Inicio Paso 1 - Librerias
   #install.packages("ggmap", dep = T)
   library(ggmap)
   #install.packages("leaflet", dep = T)
@@ -21,13 +21,13 @@
   library(gridExtra)
   #install.packages("xlsx", dep = T)
   library(xlsx)
-# Fin Paso 1
-#Inicio Paso 2 Lectura de las ciudades con sus cordenadas
-  Ciudades <- read.xlsx("CiudadesEspana.xlsx", sheetIndex = 1,stringsAsFactors = F)[,-1]
+#♠ Fin Paso 1
+#♠ Inicio Paso 2 Lectura de las ciudades con sus cordenadas
+  Ciudades <- read.xlsx("CiudadesEspaña.xlsx", sheetIndex = 1,stringsAsFactors = F)[,-1]
   ContCiudades=  nrow(Ciudades)
-#Fin del paso 2
+#♠ Fin del paso 2
 
-#Inicion Paso 3 Sacar las cordenadas de las ciudades. Sacar al paso 7 si ya se ha probado el correcto funcionamiento 
+#♠ Inicion Paso 3 Sacar las cordenadas de las ciudades. Sacar al paso 7 si ya se ha probado el correcto funcionamiento 
 #de la estracion de datos
   sacarCordenadasCiudades=function(Ciudades){
     cordenadas <- geocode(Ciudades$Ciudades) 
@@ -42,17 +42,17 @@
     return(cordenadas)
   }
   cordenadas=sacarCordenadasCiudades(Ciudades)
-#Fin de paso 3 
+#♠ Fin de paso 3 
 
-#Inicio Paso 4 inicializacion de las matrices de distancias y tiempo entre ciudades
+#♠ Inicio Paso 4 inicializacion de las matrices de distancias y tiempo entre ciudades
   distancias=matrix(0,ContCiudades,ContCiudades)
   tiempo=matrix(0,ContCiudades,ContCiudades)
   fallos=matrix(0, 2704, 2, byrow=F)
   cnames <-c("Ciudad Origen", "Ciudad Destino")
   colnames(fallos) <- cnames
-#Fin Paso 4
+#♠ Fin Paso 4
 
-#Inicio Paso 5 Sacar las distacias y el tiempo entre las ciudades 
+#♠ Inicio Paso 5 Sacar las distacias y el tiempo entre las ciudades 
   nfallos=1;
   for(i in 1:ContCiudades){
     for(j in i:ContCiudades){
@@ -77,22 +77,22 @@
       
     }
   }
-#Fin de Paso 5
+#♠ Fin de Paso 5
 
-#Inicio de Paso 6 escritura  de los datos  
+#♠ Inicio de Paso 6 escritura  de los datos  
   write.xlsx(distancias, "DistanciasCuidades.xlsx") 
   write.xlsx(tiempo, "TiemposCiudades.xlsx") 
   write.xlsx(fallos, "ciudadesQueFallan.xlsx")
   write.xlsx(Ciudades, "CiudadesEspaña.xlsx") 
-#Fin de Paso 6
+#♠ Fin de Paso 6
 
-#Inicio de Paso 7 lectura de los xlsx con los datos para que no se tengan que sacar los datos otra vez
+#♠ Inicio de Paso 7 lectura de los xlsx con los datos para que no se tengan que sacar los datos otra vez
   distancias <- read.xlsx("DistanciasCuidades.xlsx", sheetIndex = 1,stringsAsFactors = F)[,-1]
   tiempo <- read.xlsx("TiemposCiudades.xlsx", sheetIndex = 1,stringsAsFactors = F)[,-1]
   fallos <- read.xlsx("ciudadesQueFallan.xlsx", sheetIndex = 1,stringsAsFactors = F)[,-1]
-#Fin de Paso 7
+#♠ Fin de Paso 7
 
-#Inicio de Paso 8 Metodo para sacar la distancia total del recorrido entre las ciudades
+#♠ Inicio de Paso 8 Metodo para sacar la distancia total del recorrido entre las ciudades
   fitness = function(individuos, distancias){
     suma = 0;
     for(i in 1:(length(individuos)-1)){
@@ -101,9 +101,9 @@
     suma = suma + distancias[individuos[length(individuos)],individuos[1]]
     return(suma)
   }
-#Fin de Paso 8
+#♠ Fin de Paso 8
 
-#Inicio de Paso 9 MEtodo para sacar el tiempo total en lo que se tarda en sacar el recorrido entre las ciudades
+#♠ Inicio de Paso 9 MEtodo para sacar el tiempo total en lo que se tarda en sacar el recorrido entre las ciudades
   timeness= function(individuos, tiempo){
     suma = 0;
     for(i in 1:(length(individuos)-1)){
@@ -112,9 +112,9 @@
     suma = suma + tiempo[individuos[length(individuos)],individuos[1]]
     return(suma)
   }
-#Fin de paso 9
+#♠ Fin de paso 9
 
-#Inicio de Paso 10 Inicializar diferenter recorridos entre ciudades 
+#♠ Inicio de Paso 10 Inicializar diferenter recorridos entre ciudades 
   initial = function(number, ContCiudades){
     result = matrix(0, number, ContCiudades)
     for(i in 1:number){
@@ -122,9 +122,9 @@
     }
     return(result)
   }
-#Fin de Paso 10
+#♠ Fin de Paso 10
 
-#Inicio de Paso 11 torneo Binario entre las difirentes poblaciones
+#♠ Inicio de Paso 11 torneo Binario entre las difirentes poblaciones
   tournamentselection = function(evaluation,number){
     indexes = matrix(0,1,length(evaluation))
     for (i in 1:length(evaluation)){
@@ -133,9 +133,9 @@
     } 
     return(indexes)
   }
-#Fin de Paso 11
+#♠ Fin de Paso 11
 
-#Inicion de Paso 12 realizamos Un cruce de orden utizando el indexparex para identificar con que 
+#♠ Inicion de Paso 12 realizamos Un cruce de orden utizando el indexparex para identificar con que 
 #deveriamos cruzarlos
   crossover = function(indexparents,population,pcross){
     offspring = population
@@ -195,9 +195,9 @@
     }
     return(offspring)
   }
-#Fin de Paso 12
+#♠ Fin de Paso 12
 
-#Inicion de Paso 13 Mutacion Uniforme cambiamos la posicion de una ciudad con otra
+#♠ Inicion de Paso 13 Mutacion Uniforme cambiamos la posicion de una ciudad con otra
   mutation = function(population,pmut){
     ContCiudades=length(population[1,])
     Nhijos=length(population[,1])
@@ -212,18 +212,18 @@
     }
     return(population)
   }
-#Fin de Paso 13
+#♠ Fin de Paso 13
 
-#Inicio de Paso 14 Inicializacion de bariables para realizar el numero de generaciones
+#♠ Inicio de Paso 14 Inicializacion de bariables para realizar el numero de generaciones
 #Ademas de inicializar la probavilidad de cruce y de mutacion
   generations = 10000
   tournamentsize = 2
   probcrossover = 0.45
   probmutation  = 0.3
   popsize = 100
-#Fin de Paso 14
+#♠ Fin de Paso 14
 
-#Inicio de Paso 15a Realizar la permituacion y cruce de las diferenter recorridos y sacamos
+#♠ Inicio de Paso 15a Realizar la permituacion y cruce de las diferenter recorridos y sacamos
 #el mejor individuo por medio de la distancia saltar al paso 16 
 
   best = c()
@@ -255,9 +255,9 @@
                                 peor=max(evaluation),
                                 distancia=mean(as.matrix(dist(population, method = "euclidean")))))
   }
-#Fin de Paso 15a
+#♠ Fin de Paso 15a
   
-#Inicio de Paso 15 b Realizar la permituacion y cruce de las diferenter recorridos y sacamos
+#♠ Inicio de Paso 15 b Realizar la permituacion y cruce de las diferenter recorridos y sacamos
 #el mejor individuo por medio de la tiempo
   
   best = c()
@@ -290,9 +290,9 @@
                                 distancia=mean(as.matrix(dist(population, method = "euclidean")))))
   }  
   
-  #Fin de Paso 15 b  
+  #♠ Fin de Paso 15 b  
   
-#Inicio de Paso 16 Dibujamos el promedio que el cual saca la informacion de datos
+#♠ Inicio de Paso 16 Dibujamos el promedio que el cual saca la informacion de datos
   plot1 = ggplot(progreso)+
     geom_line(aes(x=g,y=mejor),col="green")+
     geom_line(aes(x=g,y=promedio),col="blue")+
@@ -303,14 +303,14 @@
          caption = "Universidad de deusto")
   
   grid.arrange(plot1,ncol=1)
-#Fin de Paso 16
+#♠ Fin de Paso 16
 
-#Inicio de Paso 17 Dibujamos las ciudades en el mapa sin recorridos
+#♠ Inicio de Paso 17 Dibujamos las ciudades en el mapa sin recorridos
   leaflet(Ciudades) %>% addTiles() %>%
     addAwesomeMarkers(Ciudades$lon, Ciudades$lat,label  =Ciudades$Ciudades)
-#Inicio de Paso 17 Dibujamos las ciudades en el mapa sin recorridos
+#♠ Inicio de Paso 17 Dibujamos las ciudades en el mapa sin recorridos
 
-#Inicio de Paso 18 Ordenamos las ciudades por su recorrido
+#♠ Inicio de Paso 18 Ordenamos las ciudades por su recorrido
   result=(stringsAsFactors = F)  
   result = Ciudades
   result$dist=0
@@ -318,9 +318,9 @@
   for(i in 1:ContCiudades){
     result[i,] = Ciudades[best[i],]
   }
-#Fin de Paso 18
+#♠ Fin de Paso 18
 
-#Inicio de Paso 19 Ponemos los balores a las ciudades para poner el numero en el cual se recorren y
+#♠ Inicio de Paso 19 Ponemos los balores a las ciudades para poner el numero en el cual se recorren y
 #Ponemos las distancias ente las ciudades
   for(i in 1:ContCiudades){
     if((i)<ContCiudades){
@@ -331,16 +331,16 @@
   result[ContCiudades+1,] = Ciudades[best[1],]
   result[ContCiudades,1]= paste(toString (52),"º ", result[52,1])
   result[ContCiudades+1,4]=paste("Distancia: ",toString(distancias[best[ContCiudades],best[1]]),"Km Tiempo:",toString(tiempo[best[ContCiudades],best[1]]),"Min" )
-#Fin de Paso 19 
+#♠ Fin de Paso 19 
 
-#Inicion de Paso 20 dibujamos el mapa con las ciudades y su recorrido en linea recta
+#♠ Inicion de Paso 20 dibujamos el mapa con las ciudades y su recorrido en linea recta
   leaflet(Ciudades) %>% addTiles() %>%
     addAwesomeMarkers(result$lon, result$lat,label  =result$Ciudades, popup = result$dist) %>%
     addPolylines(result$lon, result$lat)
 
-#Fin de paso 20
+#♠ Fin de paso 20
   
-#Inicio de Paso 21 Inicializamos las ciudades de nuevo para poder sacar las rutas 
+#♠ Inicio de Paso 21 Inicializamos las ciudades de nuevo para poder sacar las rutas 
 # Entre de las diferentes ciudades y sacamos las diferentes rutas. Si falla en alguna parte 
 # Mirar donde se a quedado y poner el valor de la i
   for(i in 1:ContCiudades){
@@ -352,35 +352,77 @@
   
     }
   rutas=rbind(rutas,route(result[ContCiudades,1] ,result[ContCiudades+1,1], structure="route"))
-#Fin de Paso 21
+#♠ Fin de Paso 21
 
-#Inicio de Paso 22 dibujar el mapa con las rutas que tiene que seguir los vehiculos
+#♠ Inicio de Paso 22 dibujar el mapa con las rutas que tiene que seguir los vehiculos
   leaflet(Ciudades) %>% addTiles() %>%
     addAwesomeMarkers(result$lon, result$lat,label  =result$Ciudades, popup = result$dist) %>%
     # addCircles(rutas$lon, rutas$lat, weight = 5, radius=100, 
     #            color="#ffa500", stroke = TRUE, fillOpacity = 0.8) %>%
     addPolylines(rutas$lon, rutas$lat,label=rutas$km)
-#Fin de Paso 22
+#♠ Fin de Paso 22
 
 
   
   
 #Fin Zona Curro-----------------------------------------------------------------------------------
-length(population[,1])
+length(population[7,])
+  length(hastaUno)
+  desdeUno
   ContCiudades
-WhereIsOne=which(population[1,]==1)
+WhereIsOne=which(population[7,]==1)
 WhereIsOne
-hastaUno=population[1,1:WhereIsOne-1]
-hastaUno
-desdeUno=population[1,(WhereIsOne):  ContCiudades]
-desdeUno
+
+hastaUno=population[7,1:WhereIsOne-1]
+
+desdeUno=population[7,(WhereIsOne):  ContCiudades]
+
+completo=0;
+completo[1:length(desdeUno)]=desdeUno
+
+length(hastaUno)
+completo[(length(desdeUno)+1):length(population[7,])]=hastaUno
+completo
+length(completo[(length(desdeUno)+1):length(population[7,])])
+
+
+#Funciona
+
+for (sift in 1:  length(population[1,])) {
+  WhereIsOne=which(population[sift,]==1)
+  hastaUno=population[sift,1:WhereIsOne-1]
+  desdeUno=population[sift,(WhereIsOne):  ContCiudades]
+  if(length(desdeUno)!=0){
+  completo[1:length(desdeUno)]=desdeUno
+  }
+  
+  if(length(hastaUno)!=0){
+  completo[(length(desdeUno)+1):length(population[1,])]=hastaUno
+  }
+  populationOrdenada[sift, ]=completo
+}
+
+#population[2,]=population[1,]
+duplicadosPopulation= duplicated(populationOrdenada[,])
+
+for(sift in 1:  length(population[1,])){
+  if(duplicadosPopulation[sift]){
+    population[sift,]=sample(1:ContCiudades)
+  }
+  
+}
+
+
+
+
+length(completo)
 completo=population[1,]
 i=length(hastaUno)
 j=length(desdeUno)
 completo[1:j]=desdeUno
 completo
 completo[(j+1):  ContCiudades]=hastaUno
-completo
+length(completo)
 
 
 
@@ -485,15 +527,15 @@ for(i in 1:ContCiudades){
     # recorrido[i,2]=distancias[best[i],best[i+1]]
     #recorrido[i,3]=tiempo[best[i],best[i+1]]
     result[i,4]=paste("Distancia: ",toString(distancias[best[i],best[i+1]])," Tiempo:",toString(tiempo[best[i],best[i+1]]) )
-    result[i,1]= paste(toString (i),"n ", result[i,1])
+    result[i,1]= paste(toString (i),"º ", result[i,1])
     #recorrido[i,1]="Distancia: "+toString(recorrido[i,2])+" Tiempo: "+ toString(recorrido[i,3])
   }
 }
 
 result[ContCiudades+1,] = Ciudades[best[1],]
-result[ContCiudades,1]= paste(toString (52),"n", result[52,1])
+result[ContCiudades,1]= paste(toString (52),"º ", result[52,1])
 result[ContCiudades+1,4]=paste("Distancia: ",toString(distancias[best[ContCiudades],best[1]])," Tiempo:",toString(tiempo[best[ContCiudades],best[1]]) )
-#Fin de Paso 19 
+#♠ Fin de Paso 19 
 
 #cordenadas <- geocode(Ciudades$Ciudades) 
 # geocodeQueryCheck(userType = "free")
