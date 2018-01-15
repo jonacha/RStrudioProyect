@@ -244,11 +244,11 @@
   
 # Inicio de Paso 15 Inicializacion de bariables para realizar el numero de generaciones
 #Ademas de inicializar la probavilidad de cruce y de mutacion
-  generations = 1000
+  generations = 10000
   tournamentsize = 2
   probcrossover = 0.45
   probmutation  = 0.3
-  popsize = 1000
+  popsize = 100
 # Fin de Paso 15
 
 # Inicio de Paso 16a Realizar la permituacion y cruce de las diferenter recorridos y sacamos
@@ -368,7 +368,7 @@
   }  
   
   # Fin de Paso 16 c
-  
+
 # Inicio de Paso 17 Dibujamos el promedio que el cual saca la informacion de datos
   plot1 = ggplot(progreso)+
     geom_line(aes(x=g,y=mejor),col="green")+
@@ -381,7 +381,7 @@
   
   grid.arrange(plot1,ncol=1)
 # Fin de Paso 17
-
+best
 # Inicio de Paso 18 Dibujamos las ciudades en el mapa sin recorridos
   leaflet(Ciudades) %>% addTiles() %>%
     addAwesomeMarkers(Ciudades$lon, Ciudades$lat,label  =Ciudades$Ciudades)
@@ -535,8 +535,6 @@ puntos = data.frame(localizacion = c("Melilla",
 
 ad = mapdist("Barcelona", "bilbao", mode="driving", output = c( "all"), messaging = FALSE, sensor = FALSE, language = "en-EN", override_limit = FALSE)
 a = mapdist(puntos$localizacion[1], puntos$localizacion[2], mode="driving")
-#a = mapdist(puntos$localizacion[4],puntos$localizacion[2],mode="driving")
-#a = mapdist(puntos$localizacion[5],puntos$localizacion[2],mode="driving")
 a = mapdist(puntos$localizacion[6], puntos$localizacion[2], mode="driving")
 a = mapdist(puntos$localizacion[7], puntos$localizacion[2], mode="driving")
 a = mapdist(puntos$localizacion[8], puntos$localizacion[2], mode="driving")
@@ -599,6 +597,13 @@ coord$lon
 # }
 # numFilas=numFilas+1
 #}
+a="Recorrido:"
+for(i in 1:ContCiudades){
+  
+  a=paste (a,",",best[i])
+  
+}
+
 
 for(i in 1:ContCiudades){
   if((i)<ContCiudades){
