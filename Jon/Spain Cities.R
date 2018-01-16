@@ -27,8 +27,8 @@
   ContCiudades=  nrow(Ciudades)
 # Fin del paso 2
 
-# Inicion Paso 3 Sacar las cordenadas de las ciudades. Sacar al paso 7 si ya se ha probado el correcto funcionamiento 
-#de la estracion de datos
+# Inicio Paso 3 Sacar las coordenadas de las ciudades. Ir al paso 7 si ya se ha probado el correcto funcionamiento 
+#de la extraccion de datos
   sacarCordenadasCiudades=function(Ciudades){
     cordenadas <- geocode(Ciudades$Ciudades) 
     for (ciudad in 1:ContCiudades) {
@@ -52,7 +52,7 @@
   colnames(fallos) <- cnames
 # Fin Paso 4
 
-# Inicio Paso 5 Sacar las distacias y el tiempo entre las ciudades 
+# Inicio Paso 5 Sacar las distancias y el tiempo entre las ciudades 
   nfallos=1;
   for(i in 1:ContCiudades){
     for(j in i:ContCiudades){
@@ -103,7 +103,7 @@
   }
 # Fin de Paso 8
 
-# Inicio de Paso 9 MEtodo para sacar el tiempo total en lo que se tarda en sacar el recorrido entre las ciudades
+# Inicio de Paso 9 Metodo para sacar el tiempo total en lo que se tarda en sacar el recorrido entre las ciudades
   timeness= function(individuos, tiempo){
     suma = 0;
     for(i in 1:(length(individuos)-1)){
@@ -114,7 +114,7 @@
   }
 # Fin de paso 9
 
-# Inicio de Paso 10 Inicializar diferenter recorridos entre ciudades 
+# Inicio de Paso 10 Inicializar diferentes recorridos entre ciudades
   initial = function(number, ContCiudades){
     result = matrix(0, number, ContCiudades)
     for(i in 1:number){
@@ -124,7 +124,7 @@
   }
 # Fin de Paso 10
 
-# Inicio de Paso 11 torneo Binario entre las difirentes poblaciones
+# Inicio de Paso 11 torneo Binario entre las diferentes poblaciones
   tournamentselection = function(evaluation,number){
     indexes = matrix(0,1,length(evaluation))
     for (i in 1:length(evaluation)){
@@ -135,8 +135,8 @@
   }
 # Fin de Paso 11
 
-# Inicion de Paso 12 realizamos Un cruce de orden utizando el indexparex para identificar con que 
-#deveriamos cruzarlos
+# Inicio de Paso 12 realizamos un cruce de orden utilizando el indexparents para identificar con que 
+#deberiamos cruzarlos
   crossover = function(indexparents,population,pcross){
     offspring = population
     for (i in seq(1,length(indexparents),2)){
@@ -197,7 +197,7 @@
   }
 # Fin de Paso 12
 
-# Inicion de Paso 13 Mutacion Uniforme cambiamos la posicion de una ciudad con otra
+# Inicio de Paso 13 Mutacion Uniforme cambiamos la posicion de una ciudad con otra
   mutation = function(population,pmut){
     ContCiudades=length(population[1,])
     Nhijos=length(population[,1])
@@ -243,8 +243,8 @@
  #Fin de paso 14 
   
   
-# Inicio de Paso 15 Inicializacion de bariables para realizar el numero de generaciones
-#Ademas de inicializar la probavilidad de cruce y de mutacion
+# Inicio de Paso 15 Inicializacion de variables para realizar el numero de generaciones
+# ademas de inicializar la probabilidad de cruce y de mutacion
   generations = 10000
   tournamentsize = 2
   probcrossover = 0.45
@@ -252,13 +252,12 @@
   popsize = 100
 # Fin de Paso 15
 
-# Inicio de Paso 16a Realizar la permituacion y cruce de las diferenter recorridos y sacamos
-#el mejor individuo por medio de la distancia saltar al paso 16 
+# Inicio de Paso 16a Realizar la permutacion y cruce de las diferentes recorridos y sacamos
+#el mejor individuo por medio de la distancia saltar al paso 17 
 
   best = c()
   bestfitness = Inf
   population = initial(popsize,ContCiudades)
-  #duplicadosPopulation= duplicated(population)
   population =  comprabarRepetido(population)
   evaluation = apply(population,1,fitness,distancias)
   progreso = data.frame(g=numeric(),distancia=numeric(),promedio=numeric(),peor=numeric(),distancia=numeric())
@@ -290,8 +289,8 @@
   }
 # Fin de Paso 16a
   
-# Inicio de Paso 16 b Realizar la permituacion y cruce de las diferenter recorridos y sacamos
-#el mejor individuo por medio de la tiempo
+# Inicio de Paso 16 b Realizar la permutacion y cruce de las diferente recorridos y sacamos
+# el mejor individuo por medio de la tiempo saltar al paso 17 
   
   best = c()
   bestfitness = Inf
@@ -328,8 +327,8 @@
   
   # Fin de Paso 16 b  
   
-  # Inicio de Paso 16 c Realizar la permituacion y cruce de las diferenter recorridos y sacamos
-  #el mejor individuo por medio de la tiempo y distancia 
+  # Inicio de Paso 16 c Realizar la permutacion y cruce de las diferente recorridos y sacamos
+  # el mejor individuo por medio de la tiempo y distancia saltar al paso 17  
   
   
   best = c()
@@ -349,9 +348,9 @@
     evaluation = apply(population,1,  timeness,tiempo)
     evaluation2 = apply(population,1,fitness,distancias)
     # Actualizamos el mejor individuo
-    #Con una And para que el tiempo y la distancia sea mejor
+    #Con una AND para que el caso en que el tiempo y la distancia sean mejores
     if (min(evaluation)<bestfitness&&min(evaluation2)<bestfitness2){
-      #Con una or para el tiempo or la distancia sea mejor
+    #Con una OR para que el caso en el que el tiempo o la distancia sea mejor
     #if (min(evaluation)<bestfitness||min(evaluation2)<bestfitness2){ 
       
       bestfitness=min(evaluation)
@@ -359,9 +358,9 @@
       best = population[which.min(evaluation),]
     }
     # Hacemos elitismo
-    #Con una And para que el tiempo y la distancia sea mejor
+    #Con una AND para que el caso en que el tiempo y la distancia sean mejores
     if (bestfitness!=min(evaluation)&&bestfitness2!=min(evaluation2)){
-      #Con una or para el tiempo or la distancia sea mejor
+   #Con una OR para que el caso en el que el tiempo o la distancia sea mejor
    #if (bestfitness!=min(evaluation)||bestfitness2!=min(evaluation2)){
       population[1,]=best
     }
@@ -376,7 +375,7 @@
   
   # Fin de Paso 16 c
 
-# Inicio de Paso 17 Dibujamos el promedio que el cual saca la informacion de datos
+# Inicio de Paso 17 Dibujamos el promedio que el cual saca la información de datos
   plot1 = ggplot(progreso)+
     geom_line(aes(x=g,y=mejor),col="green")+
     geom_line(aes(x=g,y=promedio),col="blue")+
@@ -392,7 +391,7 @@
 # Inicio de Paso 18 Dibujamos las ciudades en el mapa sin recorridos
   leaflet(Ciudades) %>% addTiles() %>%
     addAwesomeMarkers(Ciudades$lon, Ciudades$lat,label  =Ciudades$Ciudades)
-# Inicio de Paso 18 Dibujamos las ciudades en el mapa sin recorridos
+# Fin de Paso 18
 
 # Inicio de Paso 19 Ordenamos las ciudades por su recorrido
   result=(stringsAsFactors = F)  
@@ -404,8 +403,8 @@
   }
 # Fin de Paso 19
 
-# Inicio de Paso 20 Ponemos los balores a las ciudades para poner el numero en el cual se recorren y
-#Ponemos las distancias ente las ciudades
+# Inicio de Paso 20 Ponemos los valores a las ciudades para poner el numero en el cual se recorren y
+#Ponemos las distancias entre las ciudades
   for(i in 1:ContCiudades){
     if((i)<ContCiudades){
     result[i+1,4]=paste("Distancia: ",toString(distancias[best[i],best[i+1]]),"Km Tiempo:",toString(tiempo[best[i],best[i+1]]) ,"Min")
@@ -417,7 +416,7 @@
   result[ContCiudades+1,4]=paste("Distancia: ",toString(distancias[best[ContCiudades],best[1]]),"Km Tiempo:",toString(tiempo[best[ContCiudades],best[1]]),"Min" )
 # Fin de Paso 20
 
-# Inicion de Paso 21 dibujamos el mapa con las ciudades y su recorrido en linea recta
+# Inicion de Paso 21 dibujamos el mapa con las ciudades y sus recorridos en linea recta
   leaflet(Ciudades) %>% addTiles() %>%
     addAwesomeMarkers(result$lon, result$lat,label  =result$Ciudades, popup = result$dist) %>%
     addPolylines(result$lon, result$lat)
@@ -450,218 +449,3 @@
   
   
 #Fin Zona Curro-----------------------------------------------------------------------------------
-length(population[7,])
-  length(hastaUno)
-  desdeUno
-  ContCiudades
-WhereIsOne=which(population[7,]==1)
-WhereIsOne
-
-hastaUno=population[7,1:WhereIsOne-1]
-
-desdeUno=population[7,(WhereIsOne):  ContCiudades]
-
-completo=0;
-completo[1:length(desdeUno)]=desdeUno
-
-length(hastaUno)
-completo[(length(desdeUno)+1):length(population[7,])]=hastaUno
-completo
-length(completo[(length(desdeUno)+1):length(population[7,])])
-
-
-#Funciona
-ComprabarRepetido=function(population){
-populationOrdenada=population
-for (sift in 1:  length(population[1,])) {
-  WhereIsOne=which(population[sift,]==1)
-  hastaUno=population[sift,1:WhereIsOne-1]
-  desdeUno=population[sift,(WhereIsOne):  ContCiudades]
-  if(length(desdeUno)!=0){
-  completo[1:length(desdeUno)]=desdeUno
-  }
-  if(length(hastaUno)!=0){
-  completo[(length(desdeUno)+1):length(population[1,])]=hastaUno
-  }
-  populationOrdenada[sift, ]=completo
-}
-
-#population[2,]=population[1,]
-
-
-duplicadosPopulation= duplicated(populationOrdenada[,])
-for(sift in 1:  length(population[1,])){
-  if(duplicadosPopulation[sift]){
-    population[sift,]=sample(1:ContCiudades)
-  }
-}
-return(population)
-}
-
-
-
-length(completo)
-completo=population[1,]
-i=length(hastaUno)
-j=length(desdeUno)
-completo[1:j]=desdeUno
-completo
-completo[(j+1):  ContCiudades]=hastaUno
-length(completo)
-
-
-
-for (sift in 1:  ContCiudades) {
-  WhereIsOne=which(population[sift,]==1)
-  hastaUno=population[1,1:WhereIsOne-1]
-  desdeUno=population[1,(WhereIsOne):  ContCiudades]
-  completo=population[1,]
-  i=length(hastaUno)
-  j=length(desdeUno)
-  if(length(hastaUno)!=0){
-  completo[1:j]=desdeUno
-  }
-  if(length(desdeUno)!=0){
-    
-  completo[(j+1):  ContCiudades]=hastaUno
-  }
-  population[1,]=completo
-}
-
-#Zona de pruevas----------------------------------------------------------------------------------
-if(datos[,3]==N)  
-  datos[complete.cases(datos), ]  
-complete.cases()
-if(is.data.frame(datos) && nrow(datos)==0){
-  datos[,7]=0;
-}
-
-puntos = data.frame(localizacion = c("Vitoria, spain",
-                                     "Bilbao, spain"
-                                     ), stringsAsFactors = F)
-
-ad = mapdist("Barcelona", "bilbao", mode="driving", output = c( "all"), messaging = FALSE, sensor = FALSE, language = "en-EN", override_limit = FALSE)
-a = mapdist(puntos$localizacion[1], puntos$localizacion[2], mode="driving")
-a = mapdist(puntos$localizacion[6], puntos$localizacion[2], mode="driving")
-a = mapdist(puntos$localizacion[7], puntos$localizacion[2], mode="driving")
-a = mapdist(puntos$localizacion[8], puntos$localizacion[2], mode="driving")
-geocodeQueryCheck(userType = "free")
-cordenadas
-cordenadas<-  geocode(puntos$localizacion)
-cordenadas=0;
-
-puntos = data.frame(localizacion = c("Plaza Nueva Bilbao",
-                                     "Paris",
-                                     "Roma"), stringsAsFactors = F)
-
-d = mapdist(puntos$localizacion[2], puntos$localizacion[3], mode="driving")
-rute = route(puntos$localizacion[1], puntos$localizacion[2], structure="route")
-#Antiguo
-
-leaflet(Ciudades) %>% addTiles() %>%
-  addMarkers(Ciudades$lon, Ciudades$lat, popup = Ciudades$Ciudades)
-
-
-a=distancias
-b=tiempo;
-class(a)
-for(i in 1:ContCiudades){
-  a[1:(52-i),i]=distancias[i,1:(52-i)]
-  b[1:(52-i),i]=tiempo[i,1:(52-i)]
-  
-  
-}
-
-for(i in 1:ContCiudades){
-  a[i,1:i]=distancias[1:i,i]
-  b[i,1:i]=tiempo[1:i,i]
-  
-}
-
-
-a[1:52,1]
-a[1:52,1]=distancias[1,1:52]
-distancias[1,1:52]
-
-Recorridos[1:52][2] = Ciudades[, 1]
-numFilas=0
-Recorridos[numFilas][1]=Ciudadesorigen
-Ciudades$lat = cordenadas$lat
-Ciudades$lon = cordenadas$lon
-Ciudades$cordenadas.lat
-coord$lon 
-
-
-#for(i in 1:ContCiudades){
-# Ciudadesorigen=Ciudades[i,1]
-# for(j in 1:ContCiudades){
-
-#   CiudadDestino=Ciudades[j,1]
-#   Recorridos[numFilas][1]=Ciudadesorigen
-#   Recorridos[j*52:52][2]=CiudadDestino
-#   a=proc.time()-t[1]
-#    numFilas=numFilas+1
-# }
-# numFilas=numFilas+1
-#}
-a="Recorrido:"
-for(i in 1:ContCiudades){
-  
-  a=paste (a,",",best[i])
-  
-}
-
-
-for(i in 1:ContCiudades){
-  if((i)<ContCiudades){
-    # recorrido[i,2]=distancias[best[i],best[i+1]]
-    #recorrido[i,3]=tiempo[best[i],best[i+1]]
-    result[i,4]=paste("Distancia: ",toString(distancias[best[i],best[i+1]])," Tiempo:",toString(tiempo[best[i],best[i+1]]) )
-    result[i,1]= paste(toString (i),"º ", result[i,1])
-    #recorrido[i,1]="Distancia: "+toString(recorrido[i,2])+" Tiempo: "+ toString(recorrido[i,3])
-  }
-}
-
-result[ContCiudades+1,] = Ciudades[best[1],]
-result[ContCiudades,1]= paste(toString (52),"º ", result[52,1])
-result[ContCiudades+1,4]=paste("Distancia: ",toString(distancias[best[ContCiudades],best[1]])," Tiempo:",toString(tiempo[best[ContCiudades],best[1]]) )
-# Fin de Paso 19 
-
-#cordenadas <- geocode(Ciudades$Ciudades) 
-# geocodeQueryCheck(userType = "free")
-#for (ciudad in 1:ContCiudades) {
-# while(is.na(cordenadas[ciudad,1])){
-#     cordenadas[ciudad,] <- geocode(Ciudades[ciudad,1])
-#      geocodeQueryCheck(userType = "free")
-#  }
-#}
-
-
-#Ciudades$lat = cordenadas$lat
-#Ciudades$lon = cordenadas$lon
-
-#cordenadas <- geocode(Ciudades$Ciudades) 
-# geocodeQueryCheck(userType = "free")
-#for (ciudad in 1:ContCiudades) {
-# while(is.na(cordenadas[ciudad,1])){
-#     cordenadas[ciudad,] <- geocode(Ciudades[ciudad,1])
-#      geocodeQueryCheck(userType = "free")
-#  }
-#}
-
-
-#Ciudades$lat = cordenadas$lat
-#Ciudades$lon = cordenadas$lon
-#result[53,1]=paste("Distancia: ",toString(distancias[best[ContCiudades],best[1]])," Km Tiempo:",toString(tiempo[best[ContCiudades],best[1]])," Min" )
-
-#Recorridos=matrix("NA",ContCiudades*ContCiudades,5)
-#colnames(Recorridos)
-#class(Recorridos)
-#cnames <-c("Ciudad Origen", "Ciudad Destino", "Tiempo", "Gasolina", "Precio")
-#colnames(Recorridos) <- cnames
-#Antiguo -------------------------------------------------------------------------------------
-rute = route(puntos$localizacion[1], puntos$localizacion[2], structure="route")
-
-leaflet(puntos) %>% addTiles() %>%
-  addAwesomeMarkers(rute$lon, rute$lat) %>%
-  addPolylines(rute$lon, rute$lat)
