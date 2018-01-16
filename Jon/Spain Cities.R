@@ -264,8 +264,10 @@
   for (g in 1:generations){
     indexparents = tournamentselection(evaluation,tournamentsize)
     offspring1 = crossover(indexparents,population,probcrossover)
+    offspring1 =  comprabarRepetido(offspring1)
     offspring2 = mutation(offspring1,probmutation)
     population = offspring2
+    population =  comprabarRepetido(population)
     evaluation = apply(population,1,fitness,distancias)
     
     # Actualizamos el mejor individuo
@@ -299,8 +301,10 @@
   for (g in 1:generations){
     indexparents = tournamentselection(evaluation,tournamentsize)
     offspring1 = crossover(indexparents,population,probcrossover)
+    offspring1 =  comprabarRepetido(offspring1)
     offspring2 = mutation(offspring1,probmutation)
     population = offspring2
+    population =  comprabarRepetido(population)
     evaluation = apply(population,1,  timeness,tiempo)
     
     # Actualizamos el mejor individuo
@@ -324,7 +328,7 @@
   # Fin de Paso 16 b  
   
   # Inicio de Paso 16 c Realizar la permituacion y cruce de las diferenter recorridos y sacamos
-  #el mejor individuo por medio de la tiempo y distancia
+  #el mejor individuo por medio de la tiempo y distancia 
   
   
   best = c()
@@ -337,8 +341,10 @@
   for (g in 1:generations){
     indexparents = tournamentselection(evaluation,tournamentsize)
     offspring1 = crossover(indexparents,population,probcrossover)
+    offspring1 =  comprabarRepetido(offspring1)
     offspring2 = mutation(offspring1,probmutation)
     population = offspring2
+    population =  comprabarRepetido(population)
     evaluation = apply(population,1,  timeness,tiempo)
     evaluation2 = apply(population,1,fitness,distancias)
     # Actualizamos el mejor individuo
@@ -355,7 +361,7 @@
     #Con una And para que el tiempo y la distancia sea mejor
     if (bestfitness!=min(evaluation)&&bestfitness2!=min(evaluation2)){
       #Con una or para el tiempo or la distancia sea mejor
-   # if (bestfitness!=min(evaluation)||bestfitness2!=min(evaluation2)){
+   #if (bestfitness!=min(evaluation)||bestfitness2!=min(evaluation2)){
       population[1,]=best
     }
     print(paste("Generación ",g," Timeness Mejor Tiempo - ",bestfitness, " Mejor distancia es - ",bestfitness2 ))
@@ -381,7 +387,7 @@
   
   grid.arrange(plot1,ncol=1)
 # Fin de Paso 17
-best
+
 # Inicio de Paso 18 Dibujamos las ciudades en el mapa sin recorridos
   leaflet(Ciudades) %>% addTiles() %>%
     addAwesomeMarkers(Ciudades$lon, Ciudades$lat,label  =Ciudades$Ciudades)
@@ -529,9 +535,9 @@ if(is.data.frame(datos) && nrow(datos)==0){
   datos[,7]=0;
 }
 
-puntos = data.frame(localizacion = c("Melilla",
-                                     "Tenerife",
-                                     "Albacete","Centro Comercial Ferial Plaza, Guadalajara","Catedral de Leon","Tenerife","Parque De Santa Ana, Cuenca","Museo Maritimo del Cantabrico,Santander"), stringsAsFactors = F)
+puntos = data.frame(localizacion = c("Vitoria, spain",
+                                     "Bilbao, spain"
+                                     ), stringsAsFactors = F)
 
 ad = mapdist("Barcelona", "bilbao", mode="driving", output = c( "all"), messaging = FALSE, sensor = FALSE, language = "en-EN", override_limit = FALSE)
 a = mapdist(puntos$localizacion[1], puntos$localizacion[2], mode="driving")
@@ -540,7 +546,7 @@ a = mapdist(puntos$localizacion[7], puntos$localizacion[2], mode="driving")
 a = mapdist(puntos$localizacion[8], puntos$localizacion[2], mode="driving")
 geocodeQueryCheck(userType = "free")
 cordenadas
-cordenadas<-  geocode("Melilla")
+cordenadas<-  geocode(puntos$localizacion)
 cordenadas=0;
 
 puntos = data.frame(localizacion = c("Plaza Nueva Bilbao",
@@ -548,7 +554,7 @@ puntos = data.frame(localizacion = c("Plaza Nueva Bilbao",
                                      "Roma"), stringsAsFactors = F)
 
 d = mapdist(puntos$localizacion[2], puntos$localizacion[3], mode="driving")
-rute = route(puntos$localizacion[2], puntos$localizacion[3], structure="route")
+rute = route(puntos$localizacion[1], puntos$localizacion[2], structure="route")
 #Antiguo
 
 leaflet(Ciudades) %>% addTiles() %>%
