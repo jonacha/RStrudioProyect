@@ -215,6 +215,7 @@
 # Fin de Paso 13
 # Paso 14 metodo para comprobar si la poblacion tiene repeticiones y generar una nueva poblacion aleatoria en caso de que sea repetido
   comprabarRepetido=function(population){
+    completo = c()
     populationOrdenada=population
     for (sift in 1:  length(population[1,])) {
       WhereIsOne=which(population[sift,]==1)
