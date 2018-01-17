@@ -52,8 +52,11 @@
   colnames(fallos) <- cnames
 # Fin Paso 4
 
-# Inicio Paso 5 Sacar las distancias y el tiempo entre las ciudades 
-  nfallos=1;
+# Inicio Paso 5 Sacar las distancias y el tiempo entre las ciudades si sale el fallo poner el valor que tenga 
+  #Actualmente la i donde a salido el fallo y volver a ejecutar
+  #El fallo es debido a la libreria ggmap la cual no devuelve los datos no recorridos
+  #El error de la libreria: Error in * tmp [[c(1,1)]]:no such index at level 1
+ 
   for(i in 1:ContCiudades){
     for(j in i:ContCiudades){
       if(j==1){
